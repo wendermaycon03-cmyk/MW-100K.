@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>0 A 100K — Academia de Negócios e IA</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,system-ui,Arial,sans-serif}
+body{background:#050505;color:#eee;line-height:1.6}
+a{color:inherit;text-decoration:none}
+header{position:sticky;top:0;background:rgba(5,5,5,.95);border-bottom:1px solid #222;z-index:20}
+nav{max-width:1150px;margin:auto;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.logo{font-weight:900;font-size:22px}.logo b{color:#8dff7a}.logo small{display:block;font-size:10px;letter-spacing:3px;color:#d4af6a}
+nav a{margin-left:12px;font-size:13px;color:#ccc;cursor:pointer}
+.btn{background:#8dff7a;color:#000;font-weight:800;padding:13px 22px;border-radius:99px;display:inline-block;border:0;cursor:pointer}
+.btn2{border:1px solid #8dff7a;color:#8dff7a;font-weight:800;padding:13px 22px;border-radius:99px;display:inline-block;background:transparent;cursor:pointer}
+.wrap{max-width:1150px;margin:auto;padding:36px 20px}
+.hero{display:grid;grid-template-columns:1.2fr .8fr;gap:24px;align-items:center;padding:50px 20px;background:radial-gradient(circle at 20% 0%,#0d3315,transparent)}
+.hero h1{font-size:62px;line-height:.9}.hero h1 span{color:#8dff7a}.hero h2{color:#d4af6a;letter-spacing:3px;font-size:14px;margin:12px 0}.hero p{color:#bbb}
+.badge{background:#8dff7a;color:#000;display:inline-block;padding:6px 14px;border-radius:99px;font-weight:800;font-size:12px}
+.mock{background:#121212;border:1px solid #2a2a2a;border-radius:20px;padding:20px}
+.bar{height:10px;background:#222;border-radius:99px;overflow:hidden;margin:8px 0}.bar i{display:block;height:100%;background:linear-gradient(90deg,#8dff7a,#d4af6a);transition:.5s}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.card{background:#111;border:1px solid #222;border-radius:18px;padding:20px}
+.card h3{color:#8dff7a}.card p{color:#bbb;font-size:14px}
+h2.t{font-size:30px;margin-bottom:6px}h2.t span{color:#8dff7a}.sub{color:#aaa;margin-bottom:18px}
+.nicho{padding:12px 16px;border-radius:99px;border:1px solid #333;background:#111;color:#fff;cursor:pointer;font-weight:700;margin:4px}.nicho.on{background:#8dff7a;color:#000;border-color:#8dff7a}
+.tab{padding:10px 16px;border-radius:99px;border:1px solid #333;background:#111;color:#fff;cursor:pointer;font-weight:700;margin:4px}.tab.on{background:#8dff7a;color:#000}
+details{background:#0a0a0a;border:1px solid #1e1e1e;border-radius:12px;padding:12px;margin:8px 0;font-size:14px;color:#ccc}details summary{cursor:pointer;font-weight:700;color:#fff}
+input,select{width:100%;padding:12px;border-radius:12px;border:1px solid #333;background:#111;color:#fff;margin:6px 0}
+.prompt{background:#0a0a0a;border:1px solid #222;border-radius:12px;padding:12px;font-size:13px;color:#d8d8d8;white-space:pre-wrap}
+.planos{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}.plano{background:#111;border:1px solid #222;border-radius:20px;padding:22px;text-align:center}.plano.hot{border:2px solid #8dff7a}.preco{font-size:36px;font-weight:900;color:#8dff7a}
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#8dff7a;color:#000;font-weight:800;padding:12px 20px;border-radius:99px;display:none;z-index:99;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.8);display:none;align-items:center;justify-content:center;z-index:100;padding:16px}.modal.open{display:flex}.modalBox{background:#121212;border:1px solid #333;border-radius:20px;padding:24px;max-width:480px;width:100%;max-height:90vh;overflow:auto}
+footer{text-align:center;color:#777;padding:30px;border-top:1px solid #222}
+@media(max-width:850px){.hero,.grid3,.grid2,.planos{grid-template-columns:1fr}.hero h1{font-size:44px}}
+</style>
+</head>
+<body>
+<div id="toast"></div>
+
+<!-- MODAL LOGIN -->
+<div class="modal" id="modalLogin"><div class="modalBox"><h2>Entrar na Área do Aluno</h2><p style="color:#aaa;font-size:14px">Acesso de demonstração - pode usar qualquer e-mail.</p><input id="loginEmail" placeholder="Seu e-mail"><input id="loginSenha" type="password" placeholder="Sua senha"><button class="btn" style="width:100%" onclick="fazerLogin()">Entrar na Área do Aluno →</button><button class="btn2" style="width:100%;margin-top:8px" onclick="fecharModal('modalLogin')">Fechar</button></div></div>
+
+<!-- MODAL CHECKOUT -->
+<div class="modal" id="modalCheckout"><div class="modalBox"><h2 id="checkoutTitulo">Plano COMPLETO - R$297</h2><p style="color:#aaa;font-size:14px">Preencha para finalizar. Você será atendido no WhatsApp.</p><input id="cNome" placeholder="Seu nome completo"><input id="cZap" placeholder="Seu WhatsApp (DDD + número)"><input id="cEmail" placeholder="Seu e-mail"><select id="cPag"><option>Pix - à vista</option><option>Cartão - 12x</option><option>Boleto</option></select><button class="btn" style="width:100%" onclick="finalizarCompra()">Finalizar Compra →</button><button class="btn2" style="width:100%;margin-top:8px" onclick="fecharModal('modalCheckout')">Fechar</button><div id="checkoutOk" style="display:none;margin-top:14px;background:#0a1a0e;border:1px solid #2a4a2a;padding:14px;border-radius:12px"><b style="color:#8dff7a">✅ Pedido confirmado!</b><p style="color:#ddd;font-size:14px">Obrigado! Te chamamos no WhatsApp em até 10 min.</p><button class="btn" style="width:100%;margin-top:8px" onclick="abrirZap()">Falar no WhatsApp 💬</button></div></div></div>
+
+<!-- MODAL AULA -->
+<div class="modal" id="modalAula"><div class="modalBox"><h2>🎬 Aula 07 - Criar oferta com IA</h2><div style="background:#000;border-radius:12px;height:180px;display:flex;align-items:center;justify-content:center;font-size:50px" id="player">▶</div><p style="color:#aaa;font-size:13px">Demonstração do player. Na versão final aqui entra seu vídeo.</p><button class="btn" onclick="playPause()">▶ Play / ⏸ Pausar</button><button class="btn2" onclick="fecharModal('modalAula')">Fechar</button></div></div>
+
+<header><nav><div class="logo">0 A <b>100K</b><small>ACADEMIA DE NEGÓCIOS</small></div><div><a onclick="ir('inicio')">Início</a><a onclick="ir('nichos')">Nichos</a><a onclick="ir('trilhas')">Trilhas</a><a onclick="ir('aluno')">Aluno</a><a onclick="ir('planos')">Planos</a><button class="btn2" style="padding:9px 16px" onclick="abrirModal('modalLogin')">Entrar</button> <button class="btn" style="padding:9px 16px" onclick="ir('planos')">Começar Agora</button></div></nav></header>
+
+<section class="hero wrap" id="inicio">
+<div><span class="badge">🔥 +2.300 ALUNOS • 500 ESTRATÉGIAS</span><h1>0 A <span>100K</span></h1><h2>ACADEMIA DE NEGÓCIOS E INTELIGÊNCIA ARTIFICIAL</h2><p><b style="color:#fff">Transforme Conhecimento em Oportunidades.</b> Escolha seu nicho, copie os prompts, execute 3 estratégias por dia e construa seu negócio de 0 a R$100.000.</p><div style="margin-top:16px"><button class="btn" onclick="ir('planos')">QUERO COMEÇAR AGORA →</button> <button class="btn2" onclick="ir('trilhas')">Ver Trilhas</button></div><p style="margin-top:14px">⭐ 4.9/5 • Garantia 7 dias • ⏰ Termina em: <b id="timer">23:59:59</b></p></div>
+<div class="mock"><b>📊 SEU PROGRESSO</b><p style="color:#aaa;font-size:13px">Meta R$100.000 • <span id="progressoTexto">12% concluído</span></p><div class="bar"><i id="barraProgresso" style="width:12%"></i></div><p style="font-size:26px;font-weight:900;color:#8dff7a">R$ 0 → R$ 100.000 ↗</p><p style="font-size:13px">Nicho atual: <b id="nichoAtual" style="color:#d4af6a">Nenhum - escolha abaixo</b></p><button class="btn2" style="width:100%;margin-top:10px" onclick="ir('nichos')">Escolher meu nicho →</button></div>
+</section>
+
+<div class="wrap" id="nichos">
+<h2 class="t">1. Escolha seu <span>Nicho</span></h2><p class="sub">Tudo muda de acordo com seu nicho. Clique em um:</p>
+<div>
+<button class="nicho" onclick="escolherNicho('Beleza',this)">💅 Beleza</button>
+<button class="nicho" onclick="escolherNicho('Restaurante / Food',this)">🍔 Restaurante / Food</button>
+<button class="nicho" onclick="escolherNicho('Clínicas / Saúde',this)">🩺 Clínicas / Saúde</button>
+<button class="nicho" onclick="escolherNicho('Lojas / E-commerce',this)">🛍️ Lojas / E-commerce</button>
+<button class="nicho" onclick="escolherNicho('Infoprodutos',this)">📚 Infoprodutos</button>
+<button class="nicho" onclick="escolherNicho('Serviços Locais',this)">🔧 Serviços Locais</button>
+</div>
+<div class="card" id="painelNicho" style="margin-top:16px;display:none"><h3 id="painelTitulo">Seu plano para Beleza</h3><p id="painelTexto"></p><button class="btn" onclick="usarNicho()">Usar esse nicho e ir para Trilhas →</button></div>
+</div>
+
+<div class="wrap" id="metodo">
+<h2 class="t">Método <span>em 4 Fases</span></h2>
+<div class="grid3">
+<div class="card"><h3>FASE 1 • Dia 1-7</h3><p>Descoberta: validar ideia e criar oferta.</p><button class="btn2" onclick="toggle('f1')">Ver checklist ↓</button><div id="f1" style="display:none;margin-top:10px">✔ Definir nicho<br>✔ Definir avatar<br>✔ Criar oferta<br>✔ Definir preço</div></div>
+<div class="card"><h3>FASE 2 • Dia 8-30</h3><p>Construção: produto + página + Instagram.</p><button class="btn2" onclick="toggle('f2')">Ver checklist ↓</button><div id="f2" style="display:none;margin-top:10px">✔ Criar produto<br>✔ Criar página<br>✔ 15 posts<br>✔ WhatsApp pronto</div></div>
+<div class="card"><h3>FASE 3 • Dia 31-90</h3><p>Vendas + Escala: tráfego e automação.</p><button class="btn2" onclick="toggle('f3')">Ver checklist ↓</button><div id="f3" style="display:none;margin-top:10px">✔ 3 vendas<br>✔ Anúncio vencedor<br>✔ Automação<br>✔ Recorrência</div></div>
+</div>
+</div>
+
+<div class="wrap" id="trilhas">
+<h2 class="t">Trilhas — <span>100 estratégias cada</span></h2><p class="sub">Pesquise, abra o módulo, copie o prompt e marque como concluído.</p>
+<input placeholder="🔍 Pesquisar módulo... ex: vendas, copy, automação" onkeyup="filtrar(this.value)">
+<div>
+<button class="tab on" onclick="mostrar('t1',this)">Trilha 1 • Vendas</button>
+<button class="tab" onclick="mostrar('t2',this)">Trilha 2 • Produtos</button>
+<button class="tab" onclick="mostrar('t3',this)">Trilha 3 • Serviços</button>
+<button class="tab" onclick="mostrar('t4',this)">Trilha 4 • Conteúdo</button>
+<button class="tab" onclick="mostrar('t5',this)">Trilha 5 • Negócios</button>
+</div>
+<div id="t1" class="bloco"><details open><summary>Ofertas com IA - Criar oferta em 15 min</summary>Prompt: Crie uma oferta para [nicho] que resolve [dor] com nome, promessa, 3 bônus e preço R$297.<br><button class="btn2" onclick="copiarTexto('Crie uma oferta para [nicho] que resolve [dor] com nome, promessa, 3 bônus e preço R$297.')">📋 Copiar Prompt</button> <button class="btn" onclick="concluir(this)">✔ Marcar como concluído</button></details><details><summary>Copy com IA - Página de vendas</summary>Prompt: Crie copy de página de vendas com estrutura AIDA para [produto].<br><button class="btn2" onclick="copiarTexto('Crie copy de página de vendas com estrutura AIDA para [produto].')">📋 Copiar Prompt</button> <button class="btn" onclick="concluir(this)">✔ Marcar como concluído</button></details><details><summary>Funis + Anúncios + WhatsApp</summary>Funil de quiz, anúncio UGC, script de fechamento no WhatsApp.<br><button class="btn" onclick="concluir(this)">✔ Marcar como concluído</button></details></div>
+<div id="t2" class="bloco" style="display:none"><details open><summary>Produtos Digitais - Curso / Ebook / Template</summary>Crie curso em 7 dias: módulos, roteiro, slides e área de membros.<br><button class="btn" onclick="concluir(this)">✔ Marcar como concluído</button></details></div>
+<div id="t3" class="bloco" style="display:none"><details open><summary>Serviços - Prospecção e Agência</summary>Lista de 50 leads, DM personalizada, proposta em 15 min.<br><button class="btn" onclick="concluir(this)">✔ Marcar como concluído</button></details></div>
+<div id="t4" class="bloco" style="display:none"><details open><summary>Conteúdo - Roteiros Virais + UGC</summary>5 roteiros de 30s: gancho 3s + valor + CTA.<br><button class="btn" onclick="concluir(this)">✔ Marcar como concluído</button></details></div>
+<div id="t5" class="bloco" style="display:none"><details open><summary>Negócios - Automação + Financeiro</summary>Chatbot, automação de agendamento, DRE simples, fluxo de caixa.<br><button class="btn" onclick="concluir(this)">✔ Marcar como concluído</button></details></div>
+</div>
+
+<div class="wrap">
+<h2 class="t">Calculadora <span>100K</span></h2>
+<div class="card"><p>Preço: R$ <b id="vPreco">297</b></p><input type="range" min="47" max="997" value="297" oninput="calc(this.value,document.getElementById('vendas').value)"><p>Vendas/mês: <b id="vVendas">20</b></p><input id="vendas" type="range" min="5" max="100" value="20" oninput="calc(document.querySelector('input[type=range]').value,this.value)"><p style="font-size:20px;margin-top:10px">Você fatura <b style="color:#8dff7a" id="res">R$ 5.940 / mês</b> e chega a 100K em <b style="color:#d4af6a" id="meses">17 meses</b></p><button class="btn" onclick="toast('✅ Cálculo salvo! Meta: '+document.getElementById('res').innerText)">Salvar meu cálculo</button></div>
+</div>
+
+<div class="wrap" id="aluno">
+<h2 class="t">Área do <span>Aluno</span></h2>
+<div class="grid2">
+<div class="card"><h3>🎬 Aula 07 - Criar oferta com IA</h3><p>12 min • Trilha 1 • Módulo Ofertas</p><button class="btn" onclick="abrirModal('modalAula')">▶ Assistir Aula</button> <button class="btn2" onclick="baixarPlanilha()">📥 Baixar Planilha 0-100K</button></div>
+<div class="card"><h3>🏆 Depoimento</h3><p id="dep">"Fiz minha primeira venda em 9 dias usando o prompt de oferta! - Ana, Goiânia"</p><button class="btn2" onclick="trocarDep(-1)">← Anterior</button> <button class="btn2" onclick="trocarDep(1)">Próximo →</button></div>
+</div>
+</div>
+
+<div class="wrap" id="planos">
+<h2 class="t">Escolha seu <span>plano</span></h2><p class="sub">Clique e finalize no checkout. Garantia 7 dias.</p>
+<div class="planos">
+<div class="plano"><h3>ESSENCIAL</h3><div class="preco">R$ 97</div><p>1 trilha • 100 estratégias</p><button class="btn2" onclick="abrirCheckout('ESSENCIAL','R$ 97')">Quero esse plano →</button></div>
+<div class="plano hot"><div class="badge">MAIS VENDIDO</div><h3>COMPLETO</h3><div class="preco">R$ 297</div><p>5 trilhas • 500 estratégias • Vitalício</p><button class="btn" onclick="abrirCheckout('COMPLETO','R$ 297')">Quero esse plano 🔥</button></div>
+<div class="plano"><h3>VIP + MENTORIA</h3><div class="preco">R$ 997</div><p>Tudo + Mentoria + Grupo VIP</p><button class="btn2" onclick="abrirCheckout('VIP + MENTORIA','R$ 997')">Quero esse plano →</button></div>
+</div>
+</div>
+
+<footer><button class="btn2" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Voltar ao topo</button><p style="margin-top:14px">0 A 100K — Academia de Negócios e IA • Transforme conhecimento em oportunidades.</p></footer>
+
+<script>
+let progresso=12, nichoEscolhido='', planoAtual='COMPLETO', depIdx=0;
+const deps=["\"Fiz minha primeira venda em 9 dias usando o prompt de oferta! - Ana, Goiânia\"","\"R$12.400 em 30 dias com serviços de IA. - Carlos, São Paulo\"","\"Fechei 2 clientes com 3 estratégias do curso. - Fernanda, BH\""];
+const nichos={ 'Beleza':'Trilha recomendada: Vendas + Conteúdo | Primeira oferta: Pack de conteúdo + gestão de Instagram para salões | Preço sugerido: R$497/mês', 'Restaurante / Food':'Trilha recomendada: Vendas + Serviços | Primeira oferta: Gestão de Instagram + cardápio digital | Preço sugerido: R$997/mês', 'Clínicas / Saúde':'Trilha recomendada: Serviços + Automação | Primeira oferta: Agendamento automático + Instagram | Preço sugerido: R$1.497/mês', 'Lojas / E-commerce':'Trilha recomendada: Produtos + Anúncios | Primeira oferta: Loja + anúncios de produto | Preço sugerido: R$997', 'Infoprodutos':'Trilha recomendada: Produtos Digitais | Primeira oferta: Ebook / Curso de habilidade | Preço sugerido: R$297', 'Serviços Locais':'Trilha recomendada: Serviços + Prospecção | Primeira oferta: Prospecção + site simples | Preço sugerido: R$697' };
+function toast(m){let t=document.getElementById('toast');t.innerText=m;t.style.display='block';setTimeout(()=>t.style.display='none',2500)}
+function ir(id){document.getElementById(id).scrollIntoView({behavior:'smooth'})}
+function abrirModal(id){document.getElementById(id).classList.add('open')}
+function fecharModal(id){document.getElementById(id).classList.remove('open')}
+function fazerLogin(){let e=document.getElementById('loginEmail').value;if(!e){toast('⚠️ Coloque seu e-mail');return}fecharModal('modalLogin');toast('✅ Bem-vindo! Acesso liberado, '+e)}
+function escolherNicho(n,btn){nichoEscolhido=n;document.querySelectorAll('.nicho').forEach(b=>b.classList.remove('on'));btn.classList.add('on');document.getElementById('nichoAtual').innerText=n;let p=document.getElementById('painelNicho');p.style.display='block';document.getElementById('painelTitulo').innerText='Seu plano para '+n;document.getElementById('painelTexto').innerText=nichos[n];toast('✅ Nicho '+n+' selecionado!')}
+function usarNicho(){if(!nichoEscolhido){toast('⚠️ Escolha um nicho primeiro');return}toast('✅ Nicho '+nichoEscolhido+' salvo! Trilha recomendada aplicada.');ir('trilhas')}
+function toggle(id){let e=document.getElementById(id);e.style.display=e.style.display==='none'?'block':'none'}
+function mostrar(id,btn){document.querySelectorAll('.bloco').forEach(e=>e.style.display='none');document.getElementById(id).style.display='block';document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');toast('📚 Trilha aberta!')}
+function filtrar(v){v=v.toLowerCase();document.querySelectorAll('.bloco details').forEach(d=>{d.style.display=d.innerText.toLowerCase().includes(v)?'block':'none'})}
+function copiarTexto(t){navigator.clipboard.writeText(t).then(()=>toast('✅ Prompt copiado!')); }
+function concluir(btn){if(btn.disabled)return;btn.disabled=true;btn.innerText='✅ Concluído!';progresso=Math.min(100,progresso+4);document.getElementById('barraProgresso').style.width=progresso+'%';document.getElementById('progressoTexto').innerText=progresso+'% concluído';toast('🎉 Módulo concluído! Progresso: '+progresso+'%')}
+function calc(p,v){p=parseInt(p);v=parseInt(v);document.getElementById('vPreco').innerText=p;document.getElementById('vVendas').innerText=v;let total=p*v;document.getElementById('res').innerText='R$ '+total.toLocaleString('pt-BR')+' / mês';document.getElementById('meses').innerText=Math.max(1,Math.ceil(100000/total))+' meses'}
+function baixarPlanilha(){let csv='Dia,Tarefa,Meta\n1,Escolher nicho,Definir nicho\n2,Criar oferta,Criar oferta\n3,Postar 1 Reels,1 post\n7,Primeira venda,1 venda\n30,10 vendas,R$3000\n90,100K,R$100000';let b=new Blob([csv],{type:'text/csv'});let a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='plano-0-a-100k.csv';a.click();toast('📥 Planilha baixada!')}
+function trocarDep(d){depIdx=(depIdx+d+deps.length)%deps.length;document.getElementById('dep').innerText=deps[depIdx]}
+function playPause(){let p=document.getElementById('player');p.innerText=p.innerText==='▶'?'⏸ Pausado - aula rodando...':'▶';toast(p.innerText==='▶'?'⏸ Pausado':'▶ Aula rodando...')}
+function abrirCheckout(plano,preco){planoAtual=plano;document.getElementById('checkoutTitulo').innerText='Plano '+plano+' - '+preco;document.getElementById('checkoutOk').style.display='none';abrirModal('modalCheckout')}
+function finalizarCompra(){let n=document.getElementById('cNome').value, z=document.getElementById('cZap').value;if(!n||!z){toast('⚠️ Preencha nome e WhatsApp');return}document.getElementById('checkoutOk').style.display='block';toast('✅ Pedido confirmado!')}
+function abrirZap(){window.open('https://wa.me/5500000000000?text=Quero%20o%20plano%20'+encodeURIComponent(planoAtual)+'%20do%200%20A%20100K','_blank')}
+let s=86399;setInterval(()=>{s--;let h=String(Math.floor(s/3600)).padStart(2,'0'),m=String(Math.floor(s%3600/60)).padStart(2,'0'),ss=String(s%60).padStart(2,'0');document.getElementById('timer').innerText=h+':'+m+':'+ss},1000)
+document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>
